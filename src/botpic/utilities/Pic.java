@@ -168,7 +168,6 @@ public class Pic {
 	private String checkPath() {
 		path = this.absolutPath + File.separator;
 		
-		
 		if (this.getRating().contains("s")) {
 			return path + "safe"+ File.separator;
 		}
@@ -178,8 +177,10 @@ public class Pic {
 		if (this.getRating().contains("e")) {
 			return path + "explicit"+ File.separator;
 		}
-		
-		return null;
+		if (this.getRating().contains("g")) {
+			return path + "general"+ File.separator;
+		}
+		return path + "others"+ File.separator;
 	}
 	
 	

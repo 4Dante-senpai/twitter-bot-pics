@@ -48,7 +48,8 @@ public class Main {
 					        int time = 60000 * 180 ; //3 horas, 60000 = 1 minuto
 					        Thread.sleep(time);
 				        } catch (Exception exception) {
-				        	System.out.println("Error al mandar el tweet, se intentara con otra imagen");				        	
+				        	System.out.println("Error al mandar el tweet, se intentara con otra imagen");	
+							System.out.println(exception.getMessage());			        	
 				        }
 			        }
 				}

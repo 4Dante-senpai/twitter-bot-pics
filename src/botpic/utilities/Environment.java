@@ -1,68 +1,53 @@
 package botpic.utilities;
-
 import java.sql.Connection;
-//import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.io.File;
-import java.util.Locale;
+import java.net.URISyntaxException;
+import java.security.CodeSource;
+
+import botpic.Main;
 
 public class Environment {
 	private String path;
 
 
-	public Environment() {
+	public Environment() throws URISyntaxException {
 		//El constructor ya crea las carpetas
-		
-		String OS = System.getProperty("os.name", "unknown").toLowerCase(Locale.ROOT);
-		boolean win = OS.contains("win");
-		boolean linux = OS.contains("nux");
+		//Se crean las carpetas en el lugar del script
+
 		this.path = null;
-				
-		if (win) {
-			
-			// D:\ImagenesBot\
-			File pathTotal = new File("D:"+ File.separator +"ImagenesBot");
-			File pathSafe = new File(pathTotal.getAbsolutePath() + File.separator + "safe" );
-			File pathQuest = new File(pathTotal.getAbsolutePath() + File.separator + "questionable" );
-			File pathExplicit = new File(pathTotal.getAbsolutePath() + File.separator + "explicit" );
-			if (!pathTotal.exists()){
-			    pathTotal.mkdirs();
-			}
-			if (!pathSafe.exists()){
-			    pathSafe.mkdirs();
-			}
-			if (!pathQuest.exists()){
-				pathQuest.mkdirs();
-			}
-			if (!pathExplicit.exists()){
-				pathExplicit.mkdirs();
-			}
-			this.path = pathTotal.getAbsolutePath();
+
+		CodeSource codeSource = Main.class.getProtectionDomain().getCodeSource();
+		File jarFile = new File(codeSource.getLocation().toURI().getPath());
+		String pathTotal = jarFile.getParentFile().getPath();
+
+
+		File pathSafe = new File(pathTotal + File.separator + "safe" );
+		File pathQuest = new File(pathTotal + File.separator + "questionable" );
+		File pathExplicit = new File(pathTotal + File.separator + "explicit" );
+		File pathGeneral = new File(pathTotal + File.separator + "general" );
+		File pathOthers = new File(pathTotal + File.separator + "others" );
+
+		if (!pathSafe.exists()){
+			pathSafe.mkdirs();
 		}
-		
-		if (linux) {
-			// /home/pi/Desktop/
-			File pathTotal = new File(File.separator +"home"+ File.separator + "pi" + File.separator + "Desktop" + File.separator + "ImagenesBot");
-			File pathSafe = new File(pathTotal.getAbsolutePath() + File.separator + "safe" );
-			File pathQuest = new File(pathTotal.getAbsolutePath() + File.separator + "questionable" );
-			File pathExplicit = new File(pathTotal.getAbsolutePath() + File.separator + "explicit" );
-			if (!pathTotal.exists()){
-			    pathTotal.mkdirs();
-			}
-			if (!pathSafe.exists()){
-			    pathSafe.mkdirs();
-			}
-			if (!pathQuest.exists()){
-				pathQuest.mkdirs();
-			}
-			if (!pathExplicit.exists()){
-				pathExplicit.mkdirs();
-			}
-			this.path = pathTotal.getAbsolutePath();
+		if (!pathQuest.exists()){
+			pathQuest.mkdirs();
 		}
+		if (!pathExplicit.exists()){
+			pathExplicit.mkdirs();
+		}
+		if (!pathGeneral.exists()){
+			pathGeneral.mkdirs();
+		}
+		if (!pathOthers.exists()){
+			pathOthers.mkdirs();
+		}
+
+		this.path = pathTotal;
 		createDB();
 		}
 
